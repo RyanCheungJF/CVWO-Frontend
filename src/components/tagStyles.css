@@ -1,0 +1,47 @@
+.tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 30px;
+  border: 1px solid rgb(214, 216, 218);
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40%;
+  margin-left: 30%;
+  margin-bottom: 30px;
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  height: 25px;
+  margin: 2px 5px 2px 0px;
+  color: white;
+  background: #039be5;
+}
+
+.tag-container input {
+  border: none;
+  flex: 1;
+  outline: none;
+  padding: 5;
+  color: black;
+}
+
+.tag span {
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.tag-cross {
+  display: block;
+	width: auto;
+	height: 21px;
+	font-size: 8px;
+	margin-left: 8px;
+}
