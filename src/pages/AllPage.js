@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "../components/Header";
 import TagSelect from "../components/TagSelect";
 import TaskList from "../components/TaskList";
@@ -21,7 +21,11 @@ function AllPage() {
     setInputDesc,
   } = useContext(TaskContext);
 
-  const filteredTasks = tasks;
+  const [filteredTasks, setFilteredTasks] = useState(tasks);
+
+  useEffect(() => {
+    setFilteredTasks(tasks);
+  }, [tasks]);
 
   return (
     <Box>
@@ -33,16 +37,17 @@ function AllPage() {
         value={{
           tasks,
           setTasks,
-          tags, 
+          tags,
           setTags,
           inputText,
           setInputText,
           inputDesc,
           setInputDesc,
           filteredTasks,
+          setFilteredTasks,
         }}
       >
-        <TagSelect />
+        <TagSelect initialTasks={tasks} />
         <TaskList />
       </TaskContext.Provider>
     </Box>

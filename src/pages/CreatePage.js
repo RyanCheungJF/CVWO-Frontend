@@ -20,6 +20,7 @@ function CreatePage() {
     inputDesc,
     setInputDesc,
     inputTags,
+    setInputTags,
   } = useContext(TaskContext);
   const [textError, setTextError] = useState(false);
   const [descError, setDescError] = useState(false);
@@ -46,6 +47,7 @@ function CreatePage() {
       ]);
       setInputText("");
       setInputDesc("");
+      setInputTags([]);
       setTextError(false);
       setDescError(false);
     } else {

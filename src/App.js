@@ -12,14 +12,14 @@ import SignupPage from "./pages/SignupPage";
 
 const MOCK_DATA = [
   {
-    name: "Cook CurryPuff",
-    desc: "Stuffed uwu",
+    name: "Init db",
+    desc: "Download SQL",
     completed: false,
     tags: ["fish"],
   },
   {
-    name: "Become a Gopinath",
-    desc: "Gotta marry the right one!",
+    name: "Finish backend",
+    desc: "Write in Go!",
     completed: false,
     tags: ["beef"],
   },
@@ -33,7 +33,7 @@ const MOCK_DATA = [
 
 function App() {
   const [tasks, setTasks] = useState(MOCK_DATA);
-  const [tags, setTags] = useState(["fish", "beef", "chicken curry"]);
+  const [tags, setTags] = useState(["fish", "beef", "chicken curry", "fish"]);
   const [inputText, setInputText] = useState("");
   const [inputDesc, setInputDesc] = useState("");
   const [inputTags, setInputTags] = useState([]);
@@ -45,7 +45,7 @@ function App() {
           value={{
             tasks,
             setTasks,
-            tags, 
+            tags,
             setTags,
             inputText,
             setInputText,

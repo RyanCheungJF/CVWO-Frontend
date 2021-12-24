@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Header from "../components/Header";
+import TagSelect from "../components/TagSelect";
 import TaskList from "../components/TaskList";
 import { Box, Typography } from "@mui/material";
 import { TaskContext } from "../contexts/TaskContext";
@@ -9,12 +10,23 @@ const inputStyles = {
 };
 
 function CompletedPage() {
-  const { tasks, setTasks, inputText, setInputText, inputDesc, setInputDesc } =
-    useContext(TaskContext);
+  const {
+    tasks,
+    setTasks,
+    tags,
+    setTags,
+    inputText,
+    setInputText,
+    inputDesc,
+    setInputDesc,
+  } = useContext(TaskContext);
+
   const [filteredTasks, setFilteredTasks] = useState([]);
+  const [initialTasks, setInitialTasks] = useState([]);
 
   useEffect(() => {
     setFilteredTasks(tasks.filter((task) => task.completed === true));
+    setInitialTasks(tasks.filter((task) => task.completed === true));
   }, [tasks]);
 
   return (
@@ -27,13 +39,17 @@ function CompletedPage() {
         value={{
           tasks,
           setTasks,
+          tags,
+          setTags,
           inputText,
           setInputText,
           inputDesc,
           setInputDesc,
           filteredTasks,
+          setFilteredTasks,
         }}
       >
+        <TagSelect initialTasks={initialTasks} />
         <TaskList />
       </TaskContext.Provider>
     </Box>
