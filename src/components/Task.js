@@ -9,6 +9,7 @@ import {
   Typography,
   Stack,
 } from "@mui/material";
+import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoneIcon from "@mui/icons-material/Done";
 import EditIcon from "@mui/icons-material/Edit";
@@ -18,7 +19,7 @@ const tagStyles = {
   justifyContent: "center",
 };
 
-function Task({ taskObj, tasks, setTasks }) {
+function Task({ taskObj, tasks, setTasks, tags, setTags }) {
   const completeHandler = () => {
     setTasks(
       tasks.map((item) => {
@@ -35,6 +36,18 @@ function Task({ taskObj, tasks, setTasks }) {
 
   const deleteHandler = () => {
     setTasks(tasks.filter((item) => item.name !== taskObj.name));
+    setTags(removeTags());
+  };
+
+  const removeTags = () => {
+    let temp = [...tags];
+    for (let i = 0; i < taskObj.tags.length; i++) {
+      let pos = temp.indexOf(taskObj.tags[i]);
+      if (pos !== -1) {
+        temp.splice(pos, 1);
+      }
+    }
+    return temp;
   };
 
   return (
@@ -46,7 +59,7 @@ function Task({ taskObj, tasks, setTasks }) {
             <EditIcon />
           </IconButton>
           <IconButton onClick={completeHandler}>
-            <DoneIcon />
+            {taskObj.completed ? <CancelIcon /> : <DoneIcon />}
           </IconButton>
           <IconButton onClick={deleteHandler}>
             <DeleteIcon />
