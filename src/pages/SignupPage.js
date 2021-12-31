@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -9,16 +9,30 @@ import {
   Typography,
 } from "@mui/material";
 import useNavigation from "../hooks/useNavigation";
+import { useNavigate } from "react-router-dom";
 
 function SignupPage() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+  const [redirect, setRedirect] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    await fetch("http://localhost:8000/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: data.get("email"),
+        password: data.get("password"),
+      }),
     });
+    setRedirect(true);
   };
+
+  const navigate = useNavigate();
+  if (redirect) {
+    setRedirect(false);
+    navigate("/login-page");
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -68,7 +82,7 @@ function SignupPage() {
           </Button>
           <Grid container justifyContent="center">
             <Grid item>
-              <Button variant="outlined" onClick={useNavigation('/login-page')}>
+              <Button variant="outlined" onClick={useNavigation("/login-page")}>
                 Have an account? Sign in
               </Button>
             </Grid>
