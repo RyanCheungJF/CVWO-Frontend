@@ -20,8 +20,18 @@ function AllPage() {
     inputDesc,
     setInputDesc,
   } = useContext(TaskContext);
-
+  
   const [filteredTasks, setFilteredTasks] = useState(tasks);
+
+  useEffect(() => {
+    (async () => {
+      const res = await fetch("http://localhost:8000/api/user", {
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
+      const content = await res.json();
+    })();
+  }, []);
 
   useEffect(() => {
     setFilteredTasks(tasks);

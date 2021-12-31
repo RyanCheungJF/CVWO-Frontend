@@ -8,7 +8,7 @@ to get all the necessary dependencies.
 
 ### `npm start`  
 
-Runs the app in the development mode.\
+Runs the app in the development mode.
 
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
@@ -27,7 +27,10 @@ Some features being implemented include:
 - User authentication 
 
 ## Libraries + Languages
-For this project, I have decided to go with ReactJS as the frontend framework, Go as the backend language, and MySQL as the backend.\
+- Frontend Framework: ReactJS
+- Backend: Go
+- Database: MySQL
+
 Certain web languages such as CSS and a bit of HTML are also used in addition.
 
 ReactJS libraries used include:
@@ -40,4 +43,7 @@ The project is ...
 
 ## References
 
-To be added...
+Material UI Login Template: https://github.com/mui-org/material-ui/tree/master/docs/src/pages/getting-started/templates/sign-in
+
+Material UI Signup Template: https://github.com/mui-org/material-ui/tree/master/docs/src/pages/getting-started/templates/sign-up
+
