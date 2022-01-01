@@ -20,7 +20,7 @@ const tagStyles = {
 };
 
 function Task({ taskObj, tasks, setTasks, tags, setTags }) {
-  const completeHandler = () => {
+  const completeHandler = async () => {
     setTasks(
       tasks.map((item) => {
         if (item.name === taskObj.name) {
@@ -32,11 +32,27 @@ function Task({ taskObj, tasks, setTasks, tags, setTags }) {
         return item;
       })
     );
+
+    await fetch(`http://localhost:8000/api/task/${taskObj.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({
+        id: taskObj.id,
+        status: taskObj.completed,
+      }),
+    });
   };
 
-  const deleteHandler = () => {
+  const deleteHandler = async () => {
     setTasks(tasks.filter((item) => item.name !== taskObj.name));
     setTags(removeTags());
+    
+    await fetch(`http://localhost:8000/api/task/${taskObj.id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    });
   };
 
   const removeTags = () => {

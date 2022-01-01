@@ -15,7 +15,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.
   
 ## Task
-The task for this project is to build a fullstack task manager app.
+The task for this project is to build a fullstack task manager app. This project was done over the winter break.
 
 The target audience is self defined, where in this case it would be for the general public.
 

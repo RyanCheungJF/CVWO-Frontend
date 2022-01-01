@@ -13,10 +13,19 @@ import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const [redirect, setRedirect] = useState(false);
+  const [loginError, setLoginError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
+
+    if (data.get("email") === "" || data.get("password") === "") {
+      setLoginError(true);
+      setErrorMessage("Fields cannot be blank.")
+      return;
+    }
+
     const res = await fetch("http://localhost:8000/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -28,10 +37,15 @@ function LoginPage() {
     });
 
     try {
-      await res.json();
-      setRedirect(true);
-    } catch {
-      console.log("err!");
+      const content = await res.json();
+      if (content.message === "Success") {
+        setRedirect(true);
+      } else {
+        throw "Email and Password do not match!";
+      }    
+    } catch (err) {
+      setLoginError(true);
+      setErrorMessage(err);
     }
   };
 
@@ -65,6 +79,7 @@ function LoginPage() {
             name="email"
             autoComplete="email"
             autoFocus
+            error={loginError}
           />
           <TextField
             margin="normal"
@@ -75,6 +90,8 @@ function LoginPage() {
             type="password"
             id="password"
             autoComplete="current-password"
+            error={loginError}
+            helperText={loginError ? errorMessage : ""}
           />
           <Button
             type="submit"

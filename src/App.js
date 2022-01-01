@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TaskContext } from "./contexts/TaskContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AllPage from "./pages/AllPage";
@@ -10,39 +10,48 @@ import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 
-const MOCK_DATA = [
-  {
-    name: "Init db",
-    desc: "Download SQL",
-    completed: false,
-    tags: ["fish"],
-  },
-  {
-    name: "Finish backend",
-    desc: "Write in Go!",
-    completed: false,
-    tags: ["beef"],
-  },
-  {
-    name: "completed task",
-    desc: "a test",
-    completed: true,
-    tags: ["chicken curry", "fish"],
-  },
-];
-
 function App() {
-  const [tasks, setTasks] = useState(MOCK_DATA);
-  const [tags, setTags] = useState(["fish", "beef", "chicken curry", "fish"]);
+  const [tasks, setTasks] = useState([]);
+  const [tags, setTags] = useState([]);
   const [inputText, setInputText] = useState("");
   const [inputDesc, setInputDesc] = useState("");
   const [inputTags, setInputTags] = useState([]);
+  const [userid, setUserid] = useState(-1);
+
+  useEffect(() => {
+    (async () => {
+      const user = await fetch("http://localhost:8000/api/user", {
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
+      const userBody = await user.json();
+      setUserid(userBody.id);
+      const res = await fetch(`http://localhost:8000/api/task/${userBody.id}`, {
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
+      const content = await res.json();
+      const arr = [];
+      for (let i = 0; i < content.length; i++) {
+        const task = {
+          name: content[i].name,
+          desc: content[i].desc,
+          completed: content[i].status,
+          tags: content[i].tag,
+          id: content[i].id,
+        };
+        arr.push(task);
+      }
+      setTasks(arr);
+    })();
+  }, []);
 
   return (
     <Router>
       <div className="App">
         <TaskContext.Provider
           value={{
+            userid,
             tasks,
             setTasks,
             tags,

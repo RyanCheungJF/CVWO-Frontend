@@ -4,6 +4,7 @@ import TagSelect from "../components/TagSelect";
 import TaskList from "../components/TaskList";
 import { Box, Typography } from "@mui/material";
 import { TaskContext } from "../contexts/TaskContext";
+import { useNavigate } from "react-router-dom";
 
 const inputStyles = {
   margin: 30,
@@ -11,6 +12,7 @@ const inputStyles = {
 
 function AllPage() {
   const {
+    userid,
     tasks,
     setTasks,
     tags,
@@ -24,18 +26,13 @@ function AllPage() {
   const [filteredTasks, setFilteredTasks] = useState(tasks);
 
   useEffect(() => {
-    (async () => {
-      const res = await fetch("http://localhost:8000/api/user", {
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
-      const content = await res.json();
-    })();
-  }, []);
-
-  useEffect(() => {
     setFilteredTasks(tasks);
-  }, [tasks]);
+  }, [tasks, userid])
+
+  const navigate = useNavigate();
+  if (userid === -1 || userid === undefined) {
+    navigate("/login-page");
+  }
 
   return (
     <Box>
@@ -45,6 +42,7 @@ function AllPage() {
       </Typography>
       <TaskContext.Provider
         value={{
+          userid,
           tasks,
           setTasks,
           tags,
