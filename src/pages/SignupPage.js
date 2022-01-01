@@ -13,10 +13,19 @@ import { useNavigate } from "react-router-dom";
 
 function SignupPage() {
   const [redirect, setRedirect] = useState(false);
+  const [signupError, setSignupError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
+
+    if (data.get("email") === "" || data.get("password") === "") {
+      setSignupError(true);
+      setErrorMessage("Fields cannot be blank.");
+      return;
+    }
+
     await fetch("http://localhost:8000/api/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -58,6 +67,7 @@ function SignupPage() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                error={signupError}
               />
             </Grid>
             <Grid item xs={12}>
@@ -69,6 +79,8 @@ function SignupPage() {
                 type="password"
                 id="password"
                 autoComplete="new-password"
+                error={signupError}
+                helperText={signupError ? errorMessage : ""}
               />
             </Grid>
           </Grid>

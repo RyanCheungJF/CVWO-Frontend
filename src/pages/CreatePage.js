@@ -4,6 +4,7 @@ import TagInput from "../components/TagInput";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { TaskContext } from "../contexts/TaskContext";
+import { useNavigate } from "react-router-dom";
 
 const inputStyles = {
   margin: 30,
@@ -13,6 +14,7 @@ const inputStyles = {
 
 function CreatePage() {
   const {
+    userid,
     tasks,
     setTasks,
     inputText,
@@ -22,6 +24,7 @@ function CreatePage() {
     inputTags,
     setInputTags,
   } = useContext(TaskContext);
+
   const [textError, setTextError] = useState(false);
   const [descError, setDescError] = useState(false);
 
@@ -33,7 +36,7 @@ function CreatePage() {
     setInputDesc(e.target.value);
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     if (inputText && inputDesc) {
       setTasks([
@@ -45,6 +48,20 @@ function CreatePage() {
           tags: inputTags,
         },
       ]);
+
+      await fetch("http://localhost:8000/api/task", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          userid: userid,
+          name: inputText,
+          desc: inputDesc,
+          status: false,
+          tag: inputTags,
+        }),
+      });
+
       setInputText("");
       setInputDesc("");
       setInputTags([]);
@@ -55,6 +72,11 @@ function CreatePage() {
       inputDesc ? setDescError(false) : setDescError(true);
     }
   };
+
+  const navigate = useNavigate();
+  if (userid === -1 || userid === undefined) {
+    navigate("/login-page");
+  }
 
   return (
     <Box>
