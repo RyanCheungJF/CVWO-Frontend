@@ -21,25 +21,26 @@ const tagStyles = {
 
 function Task({ taskObj, tasks, setTasks, tags, setTags }) {
   const completeHandler = async () => {
+    const statusChanged = !taskObj.completed;
     setTasks(
       tasks.map((item) => {
         if (item.name === taskObj.name) {
           return {
             ...item,
-            completed: !item.completed,
+            completed: statusChanged,
           };
         }
         return item;
       })
     );
-
-    await fetch(`http://localhost:8000/api/task/${taskObj.id}`, {
+    
+    await fetch(`${process.env.REACT_APP_API_KEY}api/task/${taskObj.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify({
         id: taskObj.id,
-        status: taskObj.completed,
+        status: statusChanged,
       }),
     });
   };
@@ -47,8 +48,7 @@ function Task({ taskObj, tasks, setTasks, tags, setTags }) {
   const deleteHandler = async () => {
     setTasks(tasks.filter((item) => item.name !== taskObj.name));
     setTags(removeTags());
-    
-    await fetch(`http://localhost:8000/api/task/${taskObj.id}`, {
+    await fetch(`${process.env.REACT_APP_API_KEY}api/task/${taskObj.id}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

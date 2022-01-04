@@ -4,7 +4,6 @@ import TagSelect from "../components/TagSelect";
 import TaskList from "../components/TaskList";
 import { Box, Typography } from "@mui/material";
 import { TaskContext } from "../contexts/TaskContext";
-import { useNavigate } from "react-router-dom";
 
 const inputStyles = {
   margin: 30,
@@ -12,7 +11,6 @@ const inputStyles = {
 
 function IncompletePage() {
   const {
-    userid,
     tasks,
     setTasks,
     tags,
@@ -30,11 +28,6 @@ function IncompletePage() {
     setFilteredTasks(tasks.filter((task) => task.completed === false));
     setInitialTasks(tasks.filter((task) => task.completed === false));
   }, [tasks]);
-
-  const navigate = useNavigate();
-  if (userid === -1 || userid === undefined) {
-    navigate("/login-page");
-  }
 
   return (
     <Box>

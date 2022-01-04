@@ -12,7 +12,7 @@ function Header() {
 
   const handleLogout = async (e) => {
     e.preventDefault();
-    await fetch("http://localhost:8000/api/logout", {
+    await fetch(`${process.env.REACT_APP_API_KEY}api/logout`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

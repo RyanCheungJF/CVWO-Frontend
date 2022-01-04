@@ -4,7 +4,6 @@ import TagInput from "../components/TagInput";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { TaskContext } from "../contexts/TaskContext";
-import { useNavigate } from "react-router-dom";
 
 const inputStyles = {
   margin: 30,
@@ -49,7 +48,7 @@ function CreatePage() {
         },
       ]);
 
-      await fetch("http://localhost:8000/api/task", {
+      await fetch(`${process.env.REACT_APP_API_KEY}api/task`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -72,11 +71,6 @@ function CreatePage() {
       inputDesc ? setDescError(false) : setDescError(true);
     }
   };
-
-  const navigate = useNavigate();
-  if (userid === -1 || userid === undefined) {
-    navigate("/login-page");
-  }
 
   return (
     <Box>

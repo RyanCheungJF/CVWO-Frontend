@@ -26,7 +26,7 @@ function SignupPage() {
       return;
     }
 
-    await fetch("http://localhost:8000/api/register", {
+    await fetch(`${process.env.REACT_APP_API_KEY}api/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
