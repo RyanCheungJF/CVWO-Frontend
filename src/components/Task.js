@@ -12,7 +12,7 @@ import {
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoneIcon from "@mui/icons-material/Done";
-import EditIcon from "@mui/icons-material/Edit";
+import { green, red } from "@mui/material/colors";
 
 const tagStyles = {
   margin: 10,
@@ -33,7 +33,7 @@ function Task({ taskObj, tasks, setTasks, tags, setTags }) {
         return item;
       })
     );
-    
+
     await fetch(`${process.env.REACT_APP_API_KEY}api/task/${taskObj.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -71,14 +71,15 @@ function Task({ taskObj, tasks, setTasks, tags, setTags }) {
       <Card>
         <CardHeader title={taskObj.name} />
         <Container>
-          <IconButton onClick={() => console.log("edit")}>
-            <EditIcon />
-          </IconButton>
           <IconButton onClick={completeHandler}>
-            {taskObj.completed ? <CancelIcon /> : <DoneIcon />}
+            {taskObj.completed ? (
+              <DoneIcon sx={{ color: green[300] }} />
+            ) : (
+              <CancelIcon sx={{ color: red[400] }} />
+            )}
           </IconButton>
           <IconButton onClick={deleteHandler}>
-            <DeleteIcon />
+            <DeleteIcon color="primary" />
           </IconButton>
         </Container>
         <CardContent>

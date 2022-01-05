@@ -15,6 +15,10 @@ function LoginPage({ setTasks, setUserid }) {
   const [redirect, setRedirect] = useState(false);
   const [loginError, setLoginError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState({
+    state: false,
+    text: "Sign In",
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,6 +30,7 @@ function LoginPage({ setTasks, setUserid }) {
       return;
     }
 
+    setLoading({ state: true, text: "Loading..." });
     const res = await fetch(`${process.env.REACT_APP_API_KEY}api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -67,6 +72,8 @@ function LoginPage({ setTasks, setUserid }) {
     } catch (err) {
       setLoginError(true);
       setErrorMessage(err);
+    } finally {
+      setLoading({ state: false, text: "Sign in" });
     }
   };
 
@@ -119,8 +126,9 @@ function LoginPage({ setTasks, setUserid }) {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            disabled={loading.state}
           >
-            Sign In
+            {loading.text}
           </Button>
           <Grid container justifyContent="center">
             <Grid item>

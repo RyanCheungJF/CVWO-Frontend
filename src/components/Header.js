@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { AppBar, Button, Container, Grid, Toolbar } from "@mui/material";
 import useNavigation from "../hooks/useNavigation";
 import { useNavigate } from "react-router-dom";
@@ -8,15 +8,22 @@ const linkStyles = {
 };
 
 function Header() {
+  const [loading, setLoading] = useState({
+    state: false,
+    text: "Logout",
+  });
+
   const navigate = useNavigate();
 
   const handleLogout = async (e) => {
     e.preventDefault();
+    setLoading({ state: true, text: "Loading..." });
     await fetch(`${process.env.REACT_APP_API_KEY}api/logout`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
     });
+    setLoading({ state: false, text: "Logout" });
     navigate("/login-page");
   };
 
@@ -62,8 +69,13 @@ function Header() {
               </Button>
             </Grid>
           </Grid>
-          <Button variant="contained" color="inherit" onClick={handleLogout}>
-            LogOut
+          <Button
+            variant="contained"
+            color="inherit"
+            onClick={handleLogout}
+            disabled={loading.state}
+          >
+            {loading.text}
           </Button>
         </Toolbar>
       </Container>
