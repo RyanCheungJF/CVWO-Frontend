@@ -11,10 +11,14 @@ import {
 import useNavigation from "../hooks/useNavigation";
 import { useNavigate } from "react-router-dom";
 
-function LoginPage() {
+function LoginPage({ setTasks, setUserid }) {
   const [redirect, setRedirect] = useState(false);
   const [loginError, setLoginError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState({
+    state: false,
+    text: "Sign In",
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,11 +26,12 @@ function LoginPage() {
 
     if (data.get("email") === "" || data.get("password") === "") {
       setLoginError(true);
-      setErrorMessage("Fields cannot be blank.")
+      setErrorMessage("Fields cannot be blank.");
       return;
     }
 
-    const res = await fetch("http://localhost:8000/api/login", {
+    setLoading({ state: true, text: "Loading..." });
+    const res = await fetch(`${process.env.REACT_APP_API_KEY}api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -37,15 +42,38 @@ function LoginPage() {
     });
 
     try {
-      const content = await res.json();
-      if (content.message === "Success") {
+      const userBody = await res.json();
+      if (userBody.message === "Success") {
+        setUserid(userBody.userid);
+        const res = await fetch(
+          `${process.env.REACT_APP_API_KEY}api/task/${userBody.userid}`,
+          {
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+          }
+        );
+        const content = await res.json();
+        const arr = [];
+        for (let i = 0; i < content.length; i++) {
+          const task = {
+            name: content[i].name,
+            desc: content[i].desc,
+            completed: content[i].status,
+            tags: content[i].tag,
+            id: content[i].id,
+          };
+          arr.push(task);
+        }
+        setTasks(arr);
         setRedirect(true);
       } else {
         throw "Email and Password do not match!";
-      }    
+      }
     } catch (err) {
       setLoginError(true);
       setErrorMessage(err);
+    } finally {
+      setLoading({ state: false, text: "Sign in" });
     }
   };
 
@@ -98,8 +126,9 @@ function LoginPage() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            disabled={loading.state}
           >
-            Sign In
+            {loading.text}
           </Button>
           <Grid container justifyContent="center">
             <Grid item>

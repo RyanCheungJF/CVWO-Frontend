@@ -4,7 +4,7 @@ import TagInput from "../components/TagInput";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { TaskContext } from "../contexts/TaskContext";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 const inputStyles = {
   margin: 30,
@@ -27,6 +27,10 @@ function CreatePage() {
 
   const [textError, setTextError] = useState(false);
   const [descError, setDescError] = useState(false);
+  const [adding, setAdding] = useState({
+    state: false,
+    text: "Add Task",
+  });
 
   const inputTextHandler = (e) => {
     setInputText(e.target.value);
@@ -39,6 +43,7 @@ function CreatePage() {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (inputText && inputDesc) {
+      setAdding({ state: true, text: "Adding Task..." });
       setTasks([
         ...tasks,
         {
@@ -49,7 +54,7 @@ function CreatePage() {
         },
       ]);
 
-      await fetch("http://localhost:8000/api/task", {
+      await fetch(`${process.env.REACT_APP_API_KEY}api/task`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -67,60 +72,61 @@ function CreatePage() {
       setInputTags([]);
       setTextError(false);
       setDescError(false);
+      setAdding({ state: false, text: "Add Task" });
     } else {
       inputText ? setTextError(false) : setTextError(true);
       inputDesc ? setDescError(false) : setDescError(true);
     }
   };
 
-  const navigate = useNavigate();
-  if (userid === -1 || userid === undefined) {
-    navigate("/login-page");
+  if (userid !== -1 || userid === undefined) {
+    return (
+      <Box>
+        <Header />
+        <Typography style={inputStyles} variant="h4" gutterBottom>
+          Create a new Task here!
+        </Typography>
+        <TextField
+          style={inputStyles}
+          value={inputText}
+          onChange={inputTextHandler}
+          label="Task Name"
+          required
+          fullWidth
+          variant="outlined"
+          placeholder="Learning React!"
+          error={textError}
+          helperText={textError ? "Field is required." : ""}
+        />
+        <TextField
+          style={inputStyles}
+          value={inputDesc}
+          onChange={inputDescHandler}
+          label="Description"
+          required
+          fullWidth
+          variant="outlined"
+          multiline
+          rows={5}
+          placeholder="Describe the Task!"
+          error={descError}
+          helperText={descError ? "Field is required." : ""}
+        />
+        <TagInput />
+        <Button
+          variant="contained"
+          color="secondary"
+          startIcon={<AddIcon />}
+          onClick={submitHandler}
+          disabled={adding.state}
+        >
+          {adding.text}
+        </Button>
+      </Box>
+    );
+  } else {
+    return <Navigate to="/login-page" />;
   }
-
-  return (
-    <Box>
-      <Header />
-      <Typography style={inputStyles} variant="h4" gutterBottom>
-        Create a new Task here!
-      </Typography>
-      <TextField
-        style={inputStyles}
-        value={inputText}
-        onChange={inputTextHandler}
-        label="Task Name"
-        required
-        fullWidth
-        variant="outlined"
-        placeholder="Learning React!"
-        error={textError}
-        helperText={textError ? "Field is required." : ""}
-      />
-      <TextField
-        style={inputStyles}
-        value={inputDesc}
-        onChange={inputDescHandler}
-        label="Description"
-        required
-        fullWidth
-        variant="outlined"
-        multiline
-        rows={5}
-        placeholder="Describe the Task!"
-        error={descError}
-        helperText={descError ? "Field is required." : ""}
-      />
-      <TagInput />
-      <Button
-        variant="contained"
-        color="secondary"
-        startIcon={<AddIcon />}
-        onClick={submitHandler}
-      >
-        Add Task
-      </Button>
-    </Box>
-  );
 }
 
 export default CreatePage;
