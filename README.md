@@ -31,7 +31,7 @@ The backend is hosted on Heroku. To view the backend code, click [here](https://
 
 Here is a brief screenshot of the main page. More screenshots of examples of the different pages can be found in the `imgs` folder.
 
-![] (imgs/mainpage.png)
+![](/imgs/mainpage.png)
 
 
 ## Future Considerations/ Additions
