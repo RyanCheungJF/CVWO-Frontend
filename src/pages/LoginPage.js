@@ -135,6 +135,7 @@ function LoginPage({ setTasks, setUserid }) {
               <Button
                 variant="outlined"
                 onClick={useNavigation("/signup-page")}
+                disabled={loading.state}
               >
                 Register here!
               </Button>

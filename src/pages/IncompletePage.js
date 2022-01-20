@@ -54,7 +54,6 @@ function IncompletePage() {
         >
           <TagSelect
             initialTasks={initialTasks}
-            setInitialTasks={setInitialTasks}
           />
           <TaskList />
         </TaskContext.Provider>

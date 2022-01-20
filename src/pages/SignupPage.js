@@ -15,6 +15,10 @@ function SignupPage() {
   const [redirect, setRedirect] = useState(false);
   const [signupError, setSignupError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState({
+    state: false,
+    text: "Sign Up",
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,6 +30,7 @@ function SignupPage() {
       return;
     }
 
+    setLoading({ state: true, text: "Loading..." });
     await fetch(`${process.env.REACT_APP_API_KEY}api/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -34,6 +39,7 @@ function SignupPage() {
         password: data.get("password"),
       }),
     });
+    setLoading({ state: false, text: "Sign Up" });
     setRedirect(true);
   };
 
@@ -89,12 +95,17 @@ function SignupPage() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            disabled={loading.state}
           >
-            Sign Up
+            {loading.text}
           </Button>
           <Grid container justifyContent="center">
             <Grid item>
-              <Button variant="outlined" onClick={useNavigation("/login-page")}>
+              <Button
+                variant="outlined"
+                onClick={useNavigation("/login-page")}
+                disabled={loading.state}
+              >
                 Have an account? Sign in
               </Button>
             </Grid>
