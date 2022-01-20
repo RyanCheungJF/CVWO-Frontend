@@ -29,6 +29,10 @@ The project is hosted on Netlify. You can find it [here](https://cvwo-task-manag
 
 The backend is hosted on Heroku. To view the backend code, click [here](https://github.com/RyanCheungJF/CVWO-Backend).
 
+Here is a brief screenshot of the main page. More screenshots of examples of the different pages can be found in the `imgs` folder.
+
+![] (imgs/mainpage.png)
+
 
 ## Future Considerations/ Additions
 - Finish clean `typescript` build and run without errors, incorporate `Redux`
