@@ -14,7 +14,9 @@ Some features being implemented include:
 
 ## Libraries + Languages
 **Frontend:** ReactJS
+
 **Backend:** Go
+
 **Database:** MySQL
 
 ReactJS libraries used include:
